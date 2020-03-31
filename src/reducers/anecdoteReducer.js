@@ -17,8 +17,8 @@ const asObject = anecdote => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
-console.log(initialState)
+export const initialState = anecdotesAtStart.map(asObject)
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "NEW_ANECDOTE":
@@ -53,5 +53,4 @@ export const vote = id => {
     data: { id }
   }
 }
-
 export default reducer
