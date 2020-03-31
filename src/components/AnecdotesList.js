@@ -6,7 +6,7 @@ import { nullMesg } from "../reducers/notificationReducer"
 const Anecdote = ({ anecdote, handleVote }) => {
   return (
     <div>
-      {anecdote.content}
+      <h3>{anecdote.content}</h3>
       <div>
         Has {anecdote.votes} votes
         <button onClick={handleVote}>Vote</button>
