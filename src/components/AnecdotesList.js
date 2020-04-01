@@ -1,15 +1,18 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { vote } from "../reducers/anecdoteReducer"
+import { voteAction } from "../reducers/anecdoteReducer"
 import { voteMessage } from "../reducers/notificationReducer"
 import { nullMesg } from "../reducers/notificationReducer"
-const Anecdote = ({ anecdote, handleVote }) => {
+const Anecdote = ({ anecdote, handleVote, removeItem }) => {
   return (
     <div>
       <h3>{anecdote.content}</h3>
       <div>
-        Has {anecdote.votes} votes
-        <button onClick={handleVote}>Vote</button>
+        Has {anecdote.votes} {anecdote.votes === 1 ? "vote" : "votes"}
+        <span>
+          {" "}
+          <button onClick={handleVote}>Vote</button>
+        </span>
       </div>
     </div>
   )
@@ -18,7 +21,6 @@ const Anecdote = ({ anecdote, handleVote }) => {
 const AnecdoteList = () => {
   const dispatch = useDispatch()
   const anecdotes = useSelector(state => {
-    console.log(state.filter)
     if (state.filter === "") {
       return state.anecdotes
     } else {
@@ -37,7 +39,7 @@ const AnecdoteList = () => {
           key={anecdote.id}
           anecdote={anecdote}
           handleVote={() => {
-            dispatch(vote(anecdote.id))
+            dispatch(voteAction(anecdote))
             dispatch(voteMessage(`You voted - "${anecdote.content}"`))
             setTimeout(() => {
               dispatch(nullMesg(anecdote.content))

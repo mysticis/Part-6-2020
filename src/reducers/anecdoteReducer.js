@@ -1,16 +1,15 @@
+import anecdotesService from "../services/anecdotesService"
+//import { useSelector } from "react-redux"
 const reducer = (state = [], action) => {
+  console.log("ACTION", action)
   switch (action.type) {
     case "NEW_ANECDOTE":
       return [...state, action.data]
     case "VOTE":
-      const anecdoteId = action.data.id
-      const anecdoteToVote = state.find(anecdote => anecdote.id === anecdoteId)
-      const changedAnecdote = {
-        ...anecdoteToVote,
-        votes: anecdoteToVote.votes + 1
-      }
-      return state.map(anecDt =>
-        anecDt.id === anecdoteId ? changedAnecdote : anecDt
+      return state.map(anecdote =>
+        anecdote.id === action.updatedAnecdote.id
+          ? action.updatedAnecdote
+          : anecdote
       )
     case "INITIALIZE_ANECDOTES":
       return action.data
@@ -19,25 +18,32 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const initializeAnecdotes = anecdote => {
-  return {
-    type: "INITIALIZE_ANECDOTES",
-    data: anecdote
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdotesService.getAll()
+    dispatch({
+      type: "INITIALIZE_ANECDOTES",
+      data: anecdotes
+    })
   }
 }
 export const addAnecdote = anecdote => {
-  return {
-    type: "NEW_ANECDOTE",
-    data: {
-      content: anecdote,
-      votes: 0
-    }
+  return async dispatch => {
+    const newAnecdote = await anecdotesService.createNew(anecdote)
+    dispatch({
+      type: "NEW_ANECDOTE",
+      data: newAnecdote
+    })
   }
 }
-export const vote = id => {
-  return {
-    type: "VOTE",
-    data: { id }
+export const voteAction = anecdote => {
+  return async dispatch => {
+    const updatedAnecdote = await anecdotesService.updateAnecdote(anecdote)
+    dispatch({
+      type: "VOTE",
+      updatedAnecdote
+    })
   }
 }
+
 export default reducer
