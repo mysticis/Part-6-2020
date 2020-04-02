@@ -3,9 +3,9 @@ import { useSelector } from "react-redux"
 //import { removeMessage } from "../reducers/notificationReducer"
 
 const Notification = () => {
-  const notification = useSelector(state => state.notification.message)
+  const notification = useSelector(state => state.notification)
 
-  return notification === null ? (
+  return notification === "" ? (
     ""
   ) : (
     <div style={{ margin: 5, border: `5px solid green`, padding: 10 }}>

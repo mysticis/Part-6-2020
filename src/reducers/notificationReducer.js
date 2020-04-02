@@ -1,32 +1,20 @@
-const notificationReducer = (state = { message: null }, action) => {
+const notificationReducer = (state = "", action) => {
+  console.log("Action", action)
   switch (action.type) {
-    case "ADD_NEW":
-      return { ...state, message: action.anecdote }
-    case "VOTE_MESSAGE":
-      return { ...state, message: action.anecdote }
-    case "NULL_MESSAGE":
-      return { ...state, message: null }
+    case "SET_MESSAGE":
+      return action.message
     default:
       return state
   }
 }
 
-export const addAnecdoteMessage = anecdote => {
-  return {
-    type: "ADD_NEW",
-    anecdote
+export const setNotification = message => {
+  return async dispatch => {
+    dispatch({
+      type: "SET_MESSAGE",
+      message
+    })
   }
 }
-export const voteMessage = anecdote => {
-  return {
-    type: "VOTE_MESSAGE",
-    anecdote
-  }
-}
-export const nullMesg = message => {
-  return {
-    type: "NULL_MESSAGE",
-    message
-  }
-}
+
 export default notificationReducer
