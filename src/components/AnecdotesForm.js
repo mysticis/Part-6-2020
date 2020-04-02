@@ -9,10 +9,7 @@ const AddNewAnecdote = props => {
     const newAnecdote = event.target.anecdote.value
     event.target.anecdote.value = ""
     props.addAnecdote(newAnecdote)
-    props.setNotification(`You added - "${newAnecdote}"`)
-    setTimeout(() => {
-      props.setNotification("")
-    }, 5000)
+    props.setNotification(`You added - "${newAnecdote}"`, 5)
   }
   return (
     <React.Fragment>

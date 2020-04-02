@@ -28,6 +28,10 @@ const AnecdoteList = props => {
       )
     }
   }
+  const voteAnecdote = anecdote => {
+    props.voteAction(anecdote)
+    props.setNotification(`You voted - ${anecdote.content}`, 5)
+  }
   return anecdotes()
     .sort((a, b) => b.votes - a.votes)
     .map(anecdote => (
@@ -36,13 +40,7 @@ const AnecdoteList = props => {
         <Anecdote
           key={anecdote.id}
           anecdote={anecdote}
-          handleVote={() => {
-            props.voteAction(anecdote)
-            props.setNotification(`You voted - ${anecdote.content}`)
-            setTimeout(() => {
-              props.setNotification("")
-            }, 5000)
-          }}
+          handleVote={() => voteAnecdote(anecdote)}
         />
       </div>
     ))
