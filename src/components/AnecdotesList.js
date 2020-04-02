@@ -1,5 +1,5 @@
 import React from "react"
-import { useDispatch, connect } from "react-redux"
+import { connect } from "react-redux"
 import { voteAction } from "../reducers/anecdoteReducer"
 import { setNotification } from "../reducers/notificationReducer"
 
@@ -19,7 +19,6 @@ const Anecdote = ({ anecdote, handleVote }) => {
 }
 
 const AnecdoteList = props => {
-  const dispatch = useDispatch()
   const anecdotes = () => {
     if (props.filter === "") {
       return props.anecdotes
@@ -38,10 +37,10 @@ const AnecdoteList = props => {
           key={anecdote.id}
           anecdote={anecdote}
           handleVote={() => {
-            dispatch(voteAction(anecdote))
-            dispatch(setNotification(`You voted - ${anecdote.content}`))
+            props.voteAction(anecdote)
+            props.setNotification(`You voted - ${anecdote.content}`)
             setTimeout(() => {
-              dispatch(setNotification(""))
+              props.setNotification("")
             }, 5000)
           }}
         />
@@ -55,6 +54,13 @@ const mapStateToProps = state => {
     filter: state.filter
   }
 }
-const ConnectedAnecdotesList = connect(mapStateToProps)(AnecdoteList)
+const mapDispatchToProps = {
+  voteAction,
+  setNotification
+}
+const ConnectedAnecdotesList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteList)
 
 export default ConnectedAnecdotesList
